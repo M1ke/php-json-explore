@@ -1,0 +1,19 @@
+{
+    "name": "m1ke/json-explore",
+    "description": "Allows you to analyse the fields present in a data structure, aimed at APIs returning data as JSON",
+    "type": "library",
+    "license": "lgpl-3.0",
+    "authors": [
+        {
+            "name": "m1ke",
+            "email": "git@m1ke.me"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "M1ke\JsonExplore\\": "lib/",
+            "Vendor\\Namespace\\": ""
+        }
+    }
+}
