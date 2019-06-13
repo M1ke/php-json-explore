@@ -18,3 +18,33 @@ composer require m1ke/json-explore
 ### See an example of it working
 
 Run `php example/example.php`
+
+### Use it
+
+Three ways to create the object:
+
+```
+JsonExplore::fromJson($json);
+JsonExplore::fromArray($arr);
+JsonExplore::fromObj($basic_object); // casts to array, pretty basic
+```
+
+Do the fun bit:
+
+```
+$json_explore->analyse();
+```
+
+Output some data:
+
+```
+$json_explore->dump(); // var_dumps the analysis
+echo $json_explore->asJson(); // pretty printed JSON object of the analysis
+echo $json_explore->asPathString(); // list of keys split with dot notation
+```
+
+### Potential improvements
+
+* Unit tests (basically the example but as a PhpUnit test)
+* Output JMESPATH or other targetting syntax for specific keys
+* Other data inference, e.g. email, phone number, url
