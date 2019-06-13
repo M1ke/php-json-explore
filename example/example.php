@@ -31,3 +31,16 @@ $explore = \M1ke\JsonExplore\JsonExplore::fromJson($json);
 $explore->analyse();
 
 echo $explore->asPathString()."\n\n";
+
+/*
+ Should output:
+
+a: integer
+b: string
+c.x: boolean
+c.y: NULL
+d.0.i: string|integer
+d.0.j: string
+d.0.k: array[empty]
+
+ */
