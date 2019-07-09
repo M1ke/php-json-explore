@@ -95,16 +95,17 @@ class JsonExplore {
 
 			if (!$is_list && is_array($val) && !empty($val)){
 				$analysis[$key] = $this->recurseTypes($val, $analysis[$key] ?? []);
+				continue;
+			}
+
+			$type = $this->getType($val);
+
+			if ($is_list){
+				$analysis['list'] = true;
+				$analysis[$type] = true;
 			}
 			else {
-				$type = $this->getType($val);
-
-				if ($is_list){
-					$analysis[$type] = true;
-				}
-				else {
-					$analysis[$key][$type] = true;
-				}
+				$analysis[$key][$type] = true;
 			}
 		}
 
@@ -148,7 +149,13 @@ class JsonExplore {
 				$val = $this->recurseCompress($val);
 			}
 			else {
+				$is_list = isset($val['list']);
+				unset($val['list']);
+
 				$val = implode('|', array_keys($val));
+				if ($is_list){
+					$val = 'list['.$val.']';
+				}
 			}
 		}
 
