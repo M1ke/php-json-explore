@@ -11,16 +11,20 @@ $data = [
 	],
 	'd' => [
 		[
-			'i' => 'hello',
+			'i' => '2018-06-01 12:00:00',
 		],
 		[
 			'i' => 1,
 			'j' => 'world',
 		],
 		[
-			'k' => [],
+			'k' => ['a', 1, true],
+		],
+		[
+			'l' => [],
 		],
 	],
+	'e' => ['a', 1, true],
 ];
 
 $json = json_encode($data, JSON_PRETTY_PRINT);
@@ -39,8 +43,10 @@ a: integer
 b: string
 c.x: boolean
 c.y: NULL
-d.0.i: string|integer
+d.0.i: date|integer
 d.0.j: string
-d.0.k: array[empty]
+d.0.k: array[string|integer|boolean]
+d.0.l: array[empty]
+e: array[string|integer|boolean]
 
  */

@@ -84,29 +84,57 @@ class JsonExplore {
 	 * @return array
 	 */
 	private function recurseTypes(array $arr, array $analysis = []){
+		$is_list = array_values($arr)===$arr;
+
 		foreach ($arr as $key => $val){
-			if (is_numeric($key)){
+			if ($is_list && is_array($val)){
 				$analysis[0] = $this->recurseTypes($val, $analysis[0] ?? []);
+
 				continue;
 			}
 
-			if (is_array($val) && !empty($val)){
+			if (!$is_list && is_array($val) && !empty($val)){
 				$analysis[$key] = $this->recurseTypes($val, $analysis[$key] ?? []);
 			}
 			else {
-				$type = gettype($val);
-				if ($type==='string' && strtotime($val)){
-					$type = 'date';
-				}
-				if ($type==='array'){
-					$type .= '[empty]';
-				}
+				$type = $this->getType($val);
 
-				$analysis[$key][$type] = true;
+				if ($is_list){
+					$analysis[$type] = true;
+				}
+				else {
+					$analysis[$key][$type] = true;
+				}
 			}
 		}
 
 		return $analysis;
+	}
+
+	/**
+	 * @param mixed $val
+	 * @return string
+	 */
+	private function getType($val){
+		$type = gettype($val);
+		if ($type==='string' && $this->isDate($val)){
+			$type = 'date';
+		}
+		if ($type==='array'){
+			$type .= '[empty]';
+		}
+
+		return $type;
+	}
+
+	private function isDate(string $val){
+		switch (true){
+			case \DateTime::createFromFormat('Y-m-d H:i:s', $val):
+			case \DateTime::createFromFormat('Y-m-d', $val):
+				return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -183,5 +211,19 @@ class JsonExplore {
 		}
 
 		return $list;
+	}
+
+	/**
+	 * @param array $arr
+	 * @param array $param
+	 * @return array
+	 */
+	private function arrayTypes(array $arr, array $param){
+		foreach ($arr as $value){
+			$type = $this->getType($value);
+			$param[$type] = true;
+		}
+
+		return $param;
 	}
 }
